@@ -1,4 +1,6 @@
 # React-shop-cloudfront
+https://d1viw7rdmpypnj.cloudfront.net
+http://infrastack-websitebucket75c24d94-frjac1vdwswk.s3-website.eu-north-1.amazonaws.com
 
 This is frontend starter project for nodejs-aws mentoring program. It uses the following technologies:
 
