@@ -1,7 +1,21 @@
 {
   "version": "40.0.0",
   "files": {
-    "12901e29450b54ae9afe2292dc76d541d21b5efdf5194cf68fa21ae3ac24c09e": {
+    "2c6e8ee6362402521fa8257f9047ce6e3b2831b093e2aa9a03e128154f4cfeae": {
+      "source": {
+        "path": "asset.2c6e8ee6362402521fa8257f9047ce6e3b2831b093e2aa9a03e128154f4cfeae",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-eu-north-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1",
+          "objectKey": "2c6e8ee6362402521fa8257f9047ce6e3b2831b093e2aa9a03e128154f4cfeae.zip",
+          "region": "eu-north-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-eu-north-1"
+        }
+      }
+    },
+    "1513e658dde408e9868de549cf8aaee657ffd7b15833b3bf60b0602f9430fcaa": {
       "source": {
         "path": "InfraStack.template.json",
         "packaging": "file"
@@ -9,7 +23,7 @@
       "destinations": {
         "current_account-eu-north-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1",
-          "objectKey": "12901e29450b54ae9afe2292dc76d541d21b5efdf5194cf68fa21ae3ac24c09e.json",
+          "objectKey": "1513e658dde408e9868de549cf8aaee657ffd7b15833b3bf60b0602f9430fcaa.json",
           "region": "eu-north-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-eu-north-1"
         }
