@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/1513e658dde408e9868de549cf8aaee657ffd7b15833b3bf60b0602f9430fcaa.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/959beb409597eaa33b7750604d2a276083283ae5c91aefa5d364879492892e66.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -50,6 +50,34 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "WebsiteDistribution75DCDA0B"
+          }
+        ],
+        "/InfraStack/ProductsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "ProductsTable241ADBFF"
+            }
+          }
+        ],
+        "/InfraStack/ProductsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductsTable241ADBFF"
+          }
+        ],
+        "/InfraStack/StockTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "StockTable7710DF9D"
+            }
+          }
+        ],
+        "/InfraStack/StockTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StockTable7710DF9D"
           }
         ],
         "/InfraStack/GetProductsListLambda/ServiceRole/Resource": [
@@ -182,6 +210,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProductsApiEndpoint"
+          }
+        ],
+        "/InfraStack/ProductsTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductsTableName"
+          }
+        ],
+        "/InfraStack/StockTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StockTableName"
           }
         ],
         "/InfraStack/CDKMetadata/Default": [

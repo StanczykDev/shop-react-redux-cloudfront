@@ -1,5 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 
+
 export const products = [
     {
       id: "1",
@@ -57,6 +58,7 @@ export const products = [
     },
   ];
 
+
 export const handler: APIGatewayProxyHandler = async (event) => {
   const productId = event.pathParameters?.id;
 
@@ -69,6 +71,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         body: JSON.stringify({ message: `No product with ${productId} id`}),
         headers: {
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+          "Content-Type": "application/json",
         }
       }
     }

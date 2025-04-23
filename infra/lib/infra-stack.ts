@@ -30,7 +30,7 @@ export class InfraStack extends cdk.Stack {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
-    });
+    });  
 
     const getProductsListLambda = new NodejsFunction(this, "GetProductsListLambda", {
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -175,5 +175,6 @@ export class InfraStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'ProductsApiEndpoint', {
       value: `${api.url}products`,
     });
+    
   }
 }

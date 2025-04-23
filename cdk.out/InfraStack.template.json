@@ -101,6 +101,60 @@
     "aws:cdk:path": "InfraStack/WebsiteDistribution/Resource"
    }
   },
+  "ProductsTable241ADBFF": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "TableName": "products"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/ProductsTable/Resource"
+   }
+  },
+  "StockTable7710DF9D": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "product_id",
+      "AttributeType": "S"
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "product_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "TableName": "stock"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/StockTable/Resource"
+   }
+  },
   "GetProductsListLambdaServiceRole07D1CCC1": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -142,7 +196,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "2c6e8ee6362402521fa8257f9047ce6e3b2831b093e2aa9a03e128154f4cfeae.zip"
+     "S3Key": "0d15ea09e3b7f4b8d7f6d82338546788ca8dac4a740bd38324d12f2b5258ce66.zip"
     },
     "Handler": "index.handler",
     "Role": {
@@ -158,7 +212,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InfraStack/GetProductsListLambda/Resource",
-    "aws:asset:path": "asset.2c6e8ee6362402521fa8257f9047ce6e3b2831b093e2aa9a03e128154f4cfeae",
+    "aws:asset:path": "asset.0d15ea09e3b7f4b8d7f6d82338546788ca8dac4a740bd38324d12f2b5258ce66",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -665,7 +719,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/01Q0W7CMAz8Ft6DR0Gb9lpAe9uGygegNHXB0CZV7QyhqP8+Ja0oT3dn3V3srCH7/IDVQt95aarbsqESwlG0uSl951PgDYStNzcUtavtxEY4uIbMYx5PehRbzTgo0zhf1b2zAmFPLD2VXsjZGHrVg2p0W1b6ZF2FV4afBF/emuQm3UIoXIMxF3FQvDlpZhSGPMKUh7Cr7TO2q+0B+5aY0xO6o7MWvOsHhAJZ8o5S30xzY5y3ovbYNe7Rok1Hv6ij6HNaYiQFsvO9wXjsU0ydI/9GubgqjkY2DLMvLR6LyJ6j49dL52VQ8Q/gym9/6xVk75Atrky07L0VahGKEf8BRiHKTbgBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/01Qy27DMAz7lt5drQ9s2LUP7LatSHcvFFvp3CZ2ENkrAsP/PtgO2p5ICiIlcAXL9zdYzPDGc6mu81bXEI4O5VXgjU+B1xC2Xl7JiV1jJlbgYFstx8d40kVskSkK2VqvmsEaB2Gv2Q269k5bk0zPOgo1GuysqiH8YN1SWsgkiha7WuHJWEUXhq8MH97InKOxg1DZYkgYBa9PyEyOYZNg8kPYNeZu2zXmQEOnmfNx7PUZHd1whFARu02vc96DbqS03jixp761Y0cm1/Gkjg7P+YlCKmLrB0mphruYMgv/JPdrVRoVFuNjLz+egrQ5p41v73rvokgdwIVf/lYLWL7CcnZhreeDN053BFXBfyFlxcjSAQAA"
    },
    "Metadata": {
     "aws:cdk:path": "InfraStack/CDKMetadata/Default"
@@ -733,6 +787,16 @@
       "/products"
      ]
     ]
+   }
+  },
+  "ProductsTableName": {
+   "Value": {
+    "Ref": "ProductsTable241ADBFF"
+   }
+  },
+  "StockTableName": {
+   "Value": {
+    "Ref": "StockTable7710DF9D"
    }
   }
  },
