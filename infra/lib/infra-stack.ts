@@ -7,6 +7,7 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import * as path from "path";
 
 export class InfraStack extends cdk.Stack {
@@ -34,40 +35,75 @@ export class InfraStack extends cdk.Stack {
 
     const getProductsListLambda = new NodejsFunction(this, "GetProductsListLambda", {
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "handler",
+      handler: "getHandler",
       entry: path.join(__dirname, "productService/productService.ts")
     });
+
+    getProductsListLambda.addEnvironment('PRODUCTS_TABLE', 'products');
+    getProductsListLambda.addEnvironment('STOCK_TABLE', 'stock');
+
+    getProductsListLambda.addToRolePolicy(new PolicyStatement({
+      actions: [  
+        'dynamodb:GetItem',
+        'dynamodb:Scan',
+        'dynamodb:Query',
+        'dynamodb:PutItem',
+      ],
+      resources: [
+        'arn:aws:dynamodb:eu-north-1:845992680781:table/products',
+        'arn:aws:dynamodb:eu-north-1:845992680781:table/stock',
+      ],
+    }));
+
+    const createProductLambda = new NodejsFunction(this, 'CreateProductLambda', {
+      handler: 'createHandler',
+      runtime: lambda.Runtime.NODEJS_18_X,
+      environment: {
+        PRODUCTS_TABLE: 'products',
+      },
+      entry: path.join(__dirname, "productService/productService.ts")
+    });
+
+    createProductLambda.addToRolePolicy(new PolicyStatement({
+      actions: ['dynamodb:PutItem'],
+      resources: ['arn:aws:dynamodb:eu-north-1:845992680781:table/products'],
+    }));    
 
     const api = new apigateway.RestApi(this, "ProductServiceApi", {
       restApiName: "Product Service",
     });
 
-    const products = api.root.addResource("products");
+    const products = api.root.addResource("products", {
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: ['GET', 'POST'],
+      },
+    });
     const productById = products.addResource("{id}");
 
-    products.addMethod("OPTIONS", new apigateway.MockIntegration({
-      integrationResponses: [{
-        statusCode: "200",
-        responseParameters: {
-          "method.response.header.Access-Control-Allow-Headers": "'*'",
-          "method.response.header.Access-Control-Allow-Origin": "'*'",
-          "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-        },
-      }],
-      passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
-      requestTemplates: {
-        "application/json": '{"statusCode": 200}',
-      },
-    }), {
-      methodResponses: [{
-        statusCode: "200",
-        responseParameters: {
-          "method.response.header.Access-Control-Allow-Headers": true,
-          "method.response.header.Access-Control-Allow-Origin": true,
-          "method.response.header.Access-Control-Allow-Methods": true,
-        },
-      }],
-    });
+    // products.addMethod("OPTIONS", new apigateway.MockIntegration({
+    //   integrationResponses: [{
+    //     statusCode: "200",
+    //     responseParameters: {
+    //       "method.response.header.Access-Control-Allow-Headers": "'*'",
+    //       "method.response.header.Access-Control-Allow-Origin": "'*'",
+    //       "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+    //     },
+    //   }],
+    //   passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
+    //   requestTemplates: {
+    //     "application/json": '{"statusCode": 200}',
+    //   },
+    // }), {
+    //   methodResponses: [{
+    //     statusCode: "200",
+    //     responseParameters: {
+    //       "method.response.header.Access-Control-Allow-Headers": true,
+    //       "method.response.header.Access-Control-Allow-Origin": true,
+    //       "method.response.header.Access-Control-Allow-Methods": true,
+    //     },
+    //   }],
+    // });
     
 
     products.addMethod(
@@ -97,29 +133,29 @@ export class InfraStack extends cdk.Stack {
       }
     );
 
-    productById.addMethod("OPTIONS", new apigateway.MockIntegration({
-      integrationResponses: [{
-        statusCode: "200",
-        responseParameters: {
-          "method.response.header.Access-Control-Allow-Headers": "'*'",
-          "method.response.header.Access-Control-Allow-Origin": "'*'",
-          "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-        },
-      }],
-      passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
-      requestTemplates: {
-        "application/json": '{"statusCode": 200}',
-      },
-    }), {
-      methodResponses: [{
-        statusCode: "200",
-        responseParameters: {
-          "method.response.header.Access-Control-Allow-Headers": true,
-          "method.response.header.Access-Control-Allow-Origin": true,
-          "method.response.header.Access-Control-Allow-Methods": true,
-        },
-      }],
-    });
+    // productById.addMethod("OPTIONS", new apigateway.MockIntegration({
+    //   integrationResponses: [{
+    //     statusCode: "200",
+    //     responseParameters: {
+    //       "method.response.header.Access-Control-Allow-Headers": "'*'",
+    //       "method.response.header.Access-Control-Allow-Origin": "'*'",
+    //       "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+    //     },
+    //   }],
+    //   passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
+    //   requestTemplates: {
+    //     "application/json": '{"statusCode": 200}',
+    //   },
+    // }), {
+    //   methodResponses: [{
+    //     statusCode: "200",
+    //     responseParameters: {
+    //       "method.response.header.Access-Control-Allow-Headers": true,
+    //       "method.response.header.Access-Control-Allow-Origin": true,
+    //       "method.response.header.Access-Control-Allow-Methods": true,
+    //     },
+    //   }],
+    // });
     
     productById.addMethod("GET", new apigateway.LambdaIntegration(getProductsListLambda, {
       integrationResponses: [
@@ -153,6 +189,8 @@ export class InfraStack extends cdk.Stack {
         },
       ],
     });
+
+    products.addMethod('POST', new apigateway.LambdaIntegration(createProductLambda));
     
 
     // products.addCorsPreflight({

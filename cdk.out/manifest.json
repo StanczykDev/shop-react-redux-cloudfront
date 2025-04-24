@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/959beb409597eaa33b7750604d2a276083283ae5c91aefa5d364879492892e66.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/2ff62027d7ef006c6aaf1544b77d0d48045c56547b50026aa10b880f0eb384f5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -52,44 +52,40 @@
             "data": "WebsiteDistribution75DCDA0B"
           }
         ],
-        "/InfraStack/ProductsTable": [
-          {
-            "type": "aws:cdk:hasPhysicalName",
-            "data": {
-              "Ref": "ProductsTable241ADBFF"
-            }
-          }
-        ],
-        "/InfraStack/ProductsTable/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ProductsTable241ADBFF"
-          }
-        ],
-        "/InfraStack/StockTable": [
-          {
-            "type": "aws:cdk:hasPhysicalName",
-            "data": {
-              "Ref": "StockTable7710DF9D"
-            }
-          }
-        ],
-        "/InfraStack/StockTable/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "StockTable7710DF9D"
-          }
-        ],
         "/InfraStack/GetProductsListLambda/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GetProductsListLambdaServiceRole07D1CCC1"
           }
         ],
+        "/InfraStack/GetProductsListLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GetProductsListLambdaServiceRoleDefaultPolicyC05B33EA"
+          }
+        ],
         "/InfraStack/GetProductsListLambda/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GetProductsListLambdaC5169546"
+          }
+        ],
+        "/InfraStack/CreateProductLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateProductLambdaServiceRoleDDA15AE7"
+          }
+        ],
+        "/InfraStack/CreateProductLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateProductLambdaServiceRoleDefaultPolicyE1185464"
+          }
+        ],
+        "/InfraStack/CreateProductLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateProductLambda6A261B7D"
           }
         ],
         "/InfraStack/ProductServiceApi/Resource": [
@@ -113,7 +109,7 @@
         "/InfraStack/ProductServiceApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ProductServiceApiDeployment696F4D07ab4f0d4bbffb19efd29e31128788eff9"
+            "data": "ProductServiceApiDeployment696F4D07678343727b7934b6b8606ca10b5e1803"
           }
         ],
         "/InfraStack/ProductServiceApi/DeploymentStage.prod/Resource": [
@@ -132,6 +128,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProductServiceApiproducts612C39F6"
+          }
+        ],
+        "/InfraStack/ProductServiceApi/Default/products/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductServiceApiproductsOPTIONS099B9D02"
           }
         ],
         "/InfraStack/ProductServiceApi/Default/products/{id}/Resource": [
@@ -164,12 +166,6 @@
             "data": "ProductServiceApiproductsidGET852A9C0B"
           }
         ],
-        "/InfraStack/ProductServiceApi/Default/products/OPTIONS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ProductServiceApiproductsOPTIONS099B9D02"
-          }
-        ],
         "/InfraStack/ProductServiceApi/Default/products/GET/ApiPermission.InfraStackProductServiceApiF6E849E7.GET..products": [
           {
             "type": "aws:cdk:logicalId",
@@ -186,6 +182,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProductServiceApiproductsGET2C58D7CE"
+          }
+        ],
+        "/InfraStack/ProductServiceApi/Default/products/POST/ApiPermission.InfraStackProductServiceApiF6E849E7.POST..products": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductServiceApiproductsPOSTApiPermissionInfraStackProductServiceApiF6E849E7POSTproductsED836967"
+          }
+        ],
+        "/InfraStack/ProductServiceApi/Default/products/POST/ApiPermission.Test.InfraStackProductServiceApiF6E849E7.POST..products": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductServiceApiproductsPOSTApiPermissionTestInfraStackProductServiceApiF6E849E7POSTproducts3D63A54D"
+          }
+        ],
+        "/InfraStack/ProductServiceApi/Default/products/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductServiceApiproductsPOST9CA2279A"
           }
         ],
         "/InfraStack/BucketName": [
@@ -210,18 +224,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProductsApiEndpoint"
-          }
-        ],
-        "/InfraStack/ProductsTableName": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ProductsTableName"
-          }
-        ],
-        "/InfraStack/StockTableName": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "StockTableName"
           }
         ],
         "/InfraStack/CDKMetadata/Default": [

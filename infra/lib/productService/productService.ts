@@ -1,69 +1,27 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
+import { ScanCommand, PutItemCommand} from '@aws-sdk/client-dynamodb';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
+import { client } from "../database/seedDynamoDB";
+import { v4 as uuidv4 } from "uuid" 
 
-
-export const products = [
-    {
-      id: "1",
-      title: "Product One",
-      description: "Description for product one",
-      price: 29.99,
-    },
-    {
-      id: "2",
-      title: "Product Two",
-      description: "Description for product two",
-      price: 49.99,
-    },
-    {
-      id: "3",
-      title: "Product Three",
-      description: "Description for product three",
-      price: 39.99,
-    },
-    {
-      id: "4",
-      title: "Product Four",
-      description: "Description for product four",
-      price: 59.99,
-    },
-    {
-      id: "5",
-      title: "Product Five",
-      description: "Description for product five",
-      price: 69.99,
-    },
-    {
-      id: "6",
-      title: "Product Six",
-      description: "Description for product six",
-      price: 79.99,
-    },
-    {
-      id: "7",
-      title: "Product Seven",
-      description: "Description for product seven",
-      price: 89.99,
-    },
-    {
-      id: "8",
-      title: "Product Eight",
-      description: "Description for product eight",
-      price: 99.99,
-    },
-    {
-      id: "9",
-      title: "Product Nine",
-      description: "Description for product nine",
-      price: 109.99,
-    },
-  ];
-
-
-export const handler: APIGatewayProxyHandler = async (event) => {
+export const getHandler: APIGatewayProxyHandler = async (event) => {
   const productId = event.pathParameters?.id;
 
+  const productData = await client.send(new ScanCommand({ TableName: 'products' }));
+  const stockData = await client.send(new ScanCommand({ TableName: 'stock' }));
+
+  const products = productData.Items?.map((data) => unmarshall(data)) || [];
+  const stock = stockData.Items?.map((data) => unmarshall(data)) || [];
+
+  const stockMap = new Map(stock.map(s => [s.product_id, s.count]));
+
+  const result = products.map((product) => ({
+    ...product,
+    count: stockMap.get(product.id) ?? 0,
+  }));
+
   if (productId) {
-    const product = products.find(p => p.id === productId);
+    const product = result.find(p => (p as unknown as { id: string }).id === productId);
     
     if (!product) {
       return {
@@ -96,6 +54,50 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       "Access-Control-Allow-Headers": "*",
     },
   };
+};
+
+export const createHandler: APIGatewayProxyHandler = async (event) => {
+  try {
+    const { title, description, price, count } = JSON.parse(event.body || '{}');
+
+    if (!title || !description || !price || count == null) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Missing required fields' }),
+      };
+    }
+
+    const id = uuidv4();
+
+    await client.send(new PutItemCommand({
+      TableName: process.env.PRODUCTS_TABLE,
+      Item: {
+        id: { S: id },
+        title: { S: title },
+        description: { S: description },
+        price: { N: price.toString() },
+      },
+    }));
+
+    await client.send(new PutItemCommand({
+      TableName: 'stock',
+      Item: {
+        product_id: { S: id },
+        count: { N: count.toString() },
+      },
+    }));
+
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ id, title, description, price, count }),
+    };
+  } catch (error) {
+    console.error('Error creating product:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Failed to create product' }),
+    };
+  }
 };
 
 
