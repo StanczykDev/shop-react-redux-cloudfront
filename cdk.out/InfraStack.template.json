@@ -174,7 +174,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "3e1b25d0450482a34d09887af9d0f937ac0d539e7dd8502182585ad202ee263e.zip"
+     "S3Key": "adcb9e79d917f15da70e14fdbcc4bc725e19376e3647b2c2b19ea6c5cdc26ba7.zip"
     },
     "Environment": {
      "Variables": {
@@ -197,7 +197,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InfraStack/GetProductsListLambda/Resource",
-    "aws:asset:path": "asset.3e1b25d0450482a34d09887af9d0f937ac0d539e7dd8502182585ad202ee263e",
+    "aws:asset:path": "asset.adcb9e79d917f15da70e14fdbcc4bc725e19376e3647b2c2b19ea6c5cdc26ba7",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -242,9 +242,17 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": "dynamodb:PutItem",
+       "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:Query",
+        "dynamodb:PutItem"
+       ],
        "Effect": "Allow",
-       "Resource": "arn:aws:dynamodb:eu-north-1:845992680781:table/products"
+       "Resource": [
+        "arn:aws:dynamodb:eu-north-1:845992680781:table/products",
+        "arn:aws:dynamodb:eu-north-1:845992680781:table/stock"
+       ]
       }
      ],
      "Version": "2012-10-17"
@@ -267,7 +275,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "3e1b25d0450482a34d09887af9d0f937ac0d539e7dd8502182585ad202ee263e.zip"
+     "S3Key": "adcb9e79d917f15da70e14fdbcc4bc725e19376e3647b2c2b19ea6c5cdc26ba7.zip"
     },
     "Environment": {
      "Variables": {
@@ -289,7 +297,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InfraStack/CreateProductLambda/Resource",
-    "aws:asset:path": "asset.3e1b25d0450482a34d09887af9d0f937ac0d539e7dd8502182585ad202ee263e",
+    "aws:asset:path": "asset.adcb9e79d917f15da70e14fdbcc4bc725e19376e3647b2c2b19ea6c5cdc26ba7",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -358,7 +366,7 @@
     "aws:cdk:path": "InfraStack/ProductServiceApi/Account"
    }
   },
-  "ProductServiceApiDeployment696F4D07678343727b7934b6b8606ca10b5e1803": {
+  "ProductServiceApiDeployment696F4D073dfd9404511f02a552baaefb2f007d75": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -383,7 +391,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "ProductServiceApiDeployment696F4D07678343727b7934b6b8606ca10b5e1803"
+     "Ref": "ProductServiceApiDeployment696F4D073dfd9404511f02a552baaefb2f007d75"
     },
     "RestApiId": {
      "Ref": "ProductServiceApiFE734E24"
@@ -425,7 +433,7 @@
      "IntegrationResponses": [
       {
        "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
         "method.response.header.Access-Control-Allow-Origin": "'*'",
         "method.response.header.Access-Control-Allow-Methods": "'GET,POST'"
        },
@@ -483,9 +491,9 @@
      "IntegrationResponses": [
       {
        "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
         "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'GET,POST'"
+        "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'"
        },
        "StatusCode": "204"
       }
@@ -877,6 +885,25 @@
     "HttpMethod": "POST",
     "Integration": {
      "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'"
+       },
+       "StatusCode": "201"
+      },
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'"
+       },
+       "StatusCode": "500"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
      "Type": "AWS_PROXY",
      "Uri": {
       "Fn::Join": [
@@ -898,6 +925,24 @@
       ]
      }
     },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "201"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "500"
+     }
+    ],
     "ResourceId": {
      "Ref": "ProductServiceApiproducts612C39F6"
     },

@@ -65,9 +65,17 @@ export class InfraStack extends cdk.Stack {
     });
 
     createProductLambda.addToRolePolicy(new PolicyStatement({
-      actions: ['dynamodb:PutItem'],
-      resources: ['arn:aws:dynamodb:eu-north-1:845992680781:table/products'],
-    }));    
+      actions: [  
+        'dynamodb:GetItem',
+        'dynamodb:Scan',
+        'dynamodb:Query',
+        'dynamodb:PutItem',
+      ],
+      resources: [
+        'arn:aws:dynamodb:eu-north-1:845992680781:table/products',
+        'arn:aws:dynamodb:eu-north-1:845992680781:table/stock',
+      ],
+    }));
 
     const api = new apigateway.RestApi(this, "ProductServiceApi", {
       restApiName: "Product Service",
@@ -77,34 +85,17 @@ export class InfraStack extends cdk.Stack {
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: ['GET', 'POST'],
+        allowHeaders: ["*"],
       },
     });
-    const productById = products.addResource("{id}");
 
-    // products.addMethod("OPTIONS", new apigateway.MockIntegration({
-    //   integrationResponses: [{
-    //     statusCode: "200",
-    //     responseParameters: {
-    //       "method.response.header.Access-Control-Allow-Headers": "'*'",
-    //       "method.response.header.Access-Control-Allow-Origin": "'*'",
-    //       "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-    //     },
-    //   }],
-    //   passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
-    //   requestTemplates: {
-    //     "application/json": '{"statusCode": 200}',
-    //   },
-    // }), {
-    //   methodResponses: [{
-    //     statusCode: "200",
-    //     responseParameters: {
-    //       "method.response.header.Access-Control-Allow-Headers": true,
-    //       "method.response.header.Access-Control-Allow-Origin": true,
-    //       "method.response.header.Access-Control-Allow-Methods": true,
-    //     },
-    //   }],
-    // });
-    
+    const productById = products.addResource("{id}", {
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowMethods: ["GET", "OPTIONS"],
+        allowHeaders: ["*"],
+      },
+    });
 
     products.addMethod(
       "GET",
@@ -132,30 +123,6 @@ export class InfraStack extends cdk.Stack {
         ],
       }
     );
-
-    // productById.addMethod("OPTIONS", new apigateway.MockIntegration({
-    //   integrationResponses: [{
-    //     statusCode: "200",
-    //     responseParameters: {
-    //       "method.response.header.Access-Control-Allow-Headers": "'*'",
-    //       "method.response.header.Access-Control-Allow-Origin": "'*'",
-    //       "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-    //     },
-    //   }],
-    //   passthroughBehavior: apigateway.PassthroughBehavior.NEVER,
-    //   requestTemplates: {
-    //     "application/json": '{"statusCode": 200}',
-    //   },
-    // }), {
-    //   methodResponses: [{
-    //     statusCode: "200",
-    //     responseParameters: {
-    //       "method.response.header.Access-Control-Allow-Headers": true,
-    //       "method.response.header.Access-Control-Allow-Origin": true,
-    //       "method.response.header.Access-Control-Allow-Methods": true,
-    //     },
-    //   }],
-    // });
     
     productById.addMethod("GET", new apigateway.LambdaIntegration(getProductsListLambda, {
       integrationResponses: [
@@ -190,13 +157,46 @@ export class InfraStack extends cdk.Stack {
       ],
     });
 
-    products.addMethod('POST', new apigateway.LambdaIntegration(createProductLambda));
-    
-
-    // products.addCorsPreflight({
-    //   allowOrigins: ["*"],
-    //   allowMethods: ["GET"],
-    // });
+    products.addMethod('POST', new apigateway.LambdaIntegration(createProductLambda, {
+      integrationResponses: [
+        {
+          statusCode: "201",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": "'*'",
+            "method.response.header.Access-Control-Allow-Headers": "'*'",
+            "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+          },
+        },
+        {
+          statusCode: "500",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": "'*'",
+            "method.response.header.Access-Control-Allow-Headers": "'*'",
+            "method.response.header.Access-Control-Allow-Methods": "'POST,OPTIONS'",
+          },
+        },
+      ],
+      passthroughBehavior: apigateway.PassthroughBehavior.WHEN_NO_MATCH,
+    }), {
+      methodResponses: [
+        {
+          statusCode: "201",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+            "method.response.header.Access-Control-Allow-Methods": true,
+          },
+        },
+        {
+          statusCode: "500",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+            "method.response.header.Access-Control-Allow-Methods": true,
+          },
+        },
+      ],
+    });
 
     new cdk.CfnOutput(this, 'BucketName', {
       value: siteBucket.bucketName,

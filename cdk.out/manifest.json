@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/2ff62027d7ef006c6aaf1544b77d0d48045c56547b50026aa10b880f0eb384f5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/f49590b03063d3c7800e5aafee6af0a56cca7e32e1f826ae0a892fa3f097ef4c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -109,7 +109,7 @@
         "/InfraStack/ProductServiceApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ProductServiceApiDeployment696F4D07678343727b7934b6b8606ca10b5e1803"
+            "data": "ProductServiceApiDeployment696F4D073dfd9404511f02a552baaefb2f007d75"
           }
         ],
         "/InfraStack/ProductServiceApi/DeploymentStage.prod/Resource": [

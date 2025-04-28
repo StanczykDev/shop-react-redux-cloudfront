@@ -64,6 +64,11 @@ export const createHandler: APIGatewayProxyHandler = async (event) => {
       return {
         statusCode: 400,
         body: JSON.stringify({ message: 'Missing required fields' }),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+          "Content-Type": "application/json",
+        }
       };
     }
 
@@ -90,12 +95,22 @@ export const createHandler: APIGatewayProxyHandler = async (event) => {
     return {
       statusCode: 201,
       body: JSON.stringify({ id, title, description, price, count }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Content-Type": "application/json",
+      }
     };
   } catch (error) {
     console.error('Error creating product:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: 'Failed to create product' }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Content-Type": "application/json",
+      }
     };
   }
 };
