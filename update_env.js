@@ -9,7 +9,7 @@ try {
   console.log("Fetching CDK stack outputs...");
 
   execSync(
-    'cdk deploy --app "npx ts-node infra/bin/infra.ts" --outputs-file cdk-outputs.json --require-approval never',
+    'cdk deploy --app "npx ts-node infra/bin/infra.ts" --all --outputs-file cdk-outputs.json --require-approval never',
     { stdio: 'inherit' }
   );
   

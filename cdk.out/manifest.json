@@ -247,6 +247,102 @@
       },
       "displayName": "InfraStack"
     },
+    "ImportServiceStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "ImportServiceStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "ImportServiceStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/eu-north-1",
+      "properties": {
+        "templateFile": "ImportServiceStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/61367ddddd8912d938831576b46a55d55a08442913c0b46d9803171e9a6fbff0.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "ImportServiceStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-eu-north-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "ImportServiceStack.assets"
+      ],
+      "metadata": {
+        "/ImportServiceStack/ImportBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportBucketBAF3A8E9"
+          }
+        ],
+        "/ImportServiceStack/ImportBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportBucketPolicy77CCB6EA"
+          }
+        ],
+        "/ImportServiceStack/ImportBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportBucketAutoDeleteObjectsCustomResource1C99B8C5"
+          }
+        ],
+        "/ImportServiceStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/ImportServiceStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/ImportServiceStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/ImportServiceStack/ImportBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportBucketName"
+          }
+        ],
+        "/ImportServiceStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/ImportServiceStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/ImportServiceStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "ImportServiceStack"
+    },
     "Tree": {
       "type": "cdk:tree",
       "properties": {
