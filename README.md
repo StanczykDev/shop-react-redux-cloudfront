@@ -1,7 +1,8 @@
 # React-shop-cloudfront
 https://d1viw7rdmpypnj.cloudfront.net
 http://infrastack-websitebucket75c24d94-frjac1vdwswk.s3-website.eu-north-1.amazonaws.com
-https://3c32wuaowa.execute-api.eu-north-1.amazonaws.com/prod/products
+PRODUCTS API URL: https://3c32wuaowa.execute-api.eu-north-1.amazonaws.com/prod/products
+IMPORT API URL: https://mv1fsspphi.execute-api.eu-north-1.amazonaws.com/prod
 
 This is frontend starter project for nodejs-aws mentoring program. It uses the following technologies:
 

@@ -7,6 +7,8 @@
     "ProductsApiEndpoint": "https://3c32wuaowa.execute-api.eu-north-1.amazonaws.com/prod/products"
   },
   "ImportServiceStack": {
-    "ImportBucketName": "importservicestack-importbucketbaf3a8e9-obkkngu49bzi"
+    "ImportApiEndpointD68DD113": "https://mv1fsspphi.execute-api.eu-north-1.amazonaws.com/prod/",
+    "ImportBucketName": "importservicestack-importbucketbaf3a8e9-obkkngu49bzi",
+    "ImportAPI": "https://mv1fsspphi.execute-api.eu-north-1.amazonaws.com/prod/"
   }
 }

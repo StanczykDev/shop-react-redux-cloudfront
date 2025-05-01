@@ -1,6 +1,7 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { ScanCommand, PutItemCommand} from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
+import * as AWS from 'aws-sdk';
 import { client } from "../database/seedDynamoDB";
 import { v4 as uuidv4 } from "uuid" 
 
@@ -114,6 +115,5 @@ export const createHandler: APIGatewayProxyHandler = async (event) => {
     };
   }
 };
-
 
   
