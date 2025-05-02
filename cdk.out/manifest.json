@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/f49590b03063d3c7800e5aafee6af0a56cca7e32e1f826ae0a892fa3f097ef4c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/914782b1e39800471fed7a6423c3388fb8d2d6cd9477c2bcbc53789f89f18661.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -200,6 +200,36 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ProductServiceApiproductsPOST9CA2279A"
+          }
+        ],
+        "/InfraStack/CatalogItemsQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogItemsQueueB3B6CE23"
+          }
+        ],
+        "/InfraStack/CatalogBatchProcessLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogBatchProcessLambdaServiceRoleBBA2CA2C"
+          }
+        ],
+        "/InfraStack/CatalogBatchProcessLambda/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogBatchProcessLambdaServiceRoleDefaultPolicy81F37948"
+          }
+        ],
+        "/InfraStack/CatalogBatchProcessLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogBatchProcessLambda0FC6EE74"
+          }
+        ],
+        "/InfraStack/CatalogBatchProcessLambda/SqsEventSource:InfraStackCatalogItemsQueueBBFF9CD3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CatalogBatchProcessLambdaSqsEventSourceInfraStackCatalogItemsQueueBBFF9CD3C8CED4A7"
           }
         ],
         "/InfraStack/BucketName": [

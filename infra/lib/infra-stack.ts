@@ -9,6 +9,9 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import * as path from "path";
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
+
 
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -198,6 +201,32 @@ export class InfraStack extends cdk.Stack {
       ],
     });
 
+    const catalogItemsQueue = new sqs.Queue(this, 'CatalogItemsQueue', {
+      queueName: 'catalogItemsQueue',
+    });
+
+    const catalogBatchProcessLambda = new NodejsFunction(this, 'CatalogBatchProcessLambda', {
+      handler: 'catalogBatchProcessHandler',
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: path.join(__dirname, 'productService/productService.ts'),
+      environment: {
+        PRODUCTS_TABLE: 'products',
+      },
+    });
+    
+    catalogBatchProcessLambda.addToRolePolicy(new PolicyStatement({
+      actions: ['dynamodb:PutItem'],
+      resources: [
+        'arn:aws:dynamodb:eu-north-1:845992680781:table/products',
+      ],
+    }));
+
+    catalogBatchProcessLambda.addEventSource(
+      new lambdaEventSources.SqsEventSource(catalogItemsQueue, {
+        batchSize: 5,
+      })
+    );
+    
     new cdk.CfnOutput(this, 'BucketName', {
       value: siteBucket.bucketName,
     });

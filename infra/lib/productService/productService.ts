@@ -4,6 +4,7 @@ import { unmarshall } from '@aws-sdk/util-dynamodb';
 import * as AWS from 'aws-sdk';
 import { client } from "../database/seedDynamoDB";
 import { v4 as uuidv4 } from "uuid" 
+import { SQSEvent } from "aws-lambda";
 
 export const getHandler: APIGatewayProxyHandler = async (event) => {
   const productId = event.pathParameters?.id;
@@ -113,6 +114,21 @@ export const createHandler: APIGatewayProxyHandler = async (event) => {
         "Content-Type": "application/json",
       }
     };
+  }
+};
+
+export const catalogBatchProcessHandler = async (event: SQSEvent) => {
+  for (const record of event.Records) {
+    const product = JSON.parse(record.body);
+    await client.send(new PutItemCommand({
+      TableName: 'products',
+      Item: {
+        id: { S: product.id },
+        title: { S: product.title },
+        description: { S: product.description },
+        product: { N: product.price.toString() },
+      },
+    }));
   }
 };
 
