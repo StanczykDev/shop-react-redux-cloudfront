@@ -337,7 +337,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "c3d125bf4201e6e66ae63a1d22db355113104bfcbf648c244c87b9ac567b1b08.zip"
+     "S3Key": "4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e.zip"
     },
     "Environment": {
      "Variables": {
@@ -361,7 +361,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ImportServiceStack/ImportProductsFileLambda/Resource",
-    "aws:asset:path": "asset.c3d125bf4201e6e66ae63a1d22db355113104bfcbf648c244c87b9ac567b1b08",
+    "aws:asset:path": "asset.4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -694,6 +694,17 @@
      "Statement": [
       {
        "Action": [
+        "sqs:SendMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "InfraStack:ExportsOutputFnGetAttCatalogItemsQueueB3B6CE23Arn84BD9E22"
+       }
+      },
+      {
+       "Action": [
         "s3:GetObject*",
         "s3:GetBucket*",
         "s3:List*"
@@ -743,7 +754,14 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "c3d125bf4201e6e66ae63a1d22db355113104bfcbf648c244c87b9ac567b1b08.zip"
+     "S3Key": "4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "SQS_URL": {
+       "Fn::ImportValue": "InfraStack:ExportsOutputRefCatalogItemsQueueB3B6CE2371CAE407"
+      }
+     }
     },
     "Handler": "index.parseFileHandler",
     "Role": {
@@ -760,7 +778,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ImportServiceStack/ImportFileParserLambda/Resource",
-    "aws:asset:path": "asset.c3d125bf4201e6e66ae63a1d22db355113104bfcbf648c244c87b9ac567b1b08",
+    "aws:asset:path": "asset.4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }

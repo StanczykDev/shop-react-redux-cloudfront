@@ -4,7 +4,7 @@ import { InfraStack } from '../lib/infra-stack';
 import { ImportServiceStack } from '../lib/import-service-stack';
 
 const app = new cdk.App();
-new InfraStack(app, 'InfraStack', {
+const infraStack = new InfraStack(app, 'InfraStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -22,4 +22,5 @@ new InfraStack(app, 'InfraStack', {
 
 new ImportServiceStack(app, 'ImportServiceStack', {
   env: { region: 'eu-north-1' },
+  catalogItemsQueue: infraStack.catalogItemsQueue,
 })

@@ -7,9 +7,14 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+
+interface ImportServiceStackProps extends cdk.StackProps {
+  catalogItemsQueue: sqs.IQueue;
+} 
 
 export class ImportServiceStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: ImportServiceStackProps) {
     super(scope, id, props);
 
     const importBucket = new s3.Bucket(this, 'ImportBucket', {
@@ -28,6 +33,8 @@ export class ImportServiceStack extends cdk.Stack {
         }
       ]
     });
+
+    const catalogItemsQueue = props.catalogItemsQueue;
 
     const importProductsFileLambda = new NodejsFunction(this, 'ImportProductsFileLambda', {
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -71,7 +78,12 @@ export class ImportServiceStack extends cdk.Stack {
       runtime: lambda.Runtime.NODEJS_18_X,
       entry: path.join(__dirname, 'importService/importService.ts'),
       handler: 'parseFileHandler',
+      environment: {
+        SQS_URL: catalogItemsQueue.queueUrl,
+      }
     });
+
+    catalogItemsQueue.grantSendMessages(importFileParserLambda);
     
     importBucket.grantRead(importFileParserLambda);
     

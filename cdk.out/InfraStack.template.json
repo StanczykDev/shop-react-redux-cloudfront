@@ -1163,6 +1163,33 @@
      ]
     ]
    }
+  },
+  "CatalogItemsQueueURL": {
+   "Value": {
+    "Ref": "CatalogItemsQueueB3B6CE23"
+   },
+   "Export": {
+    "Name": "CatalogItemsQueueURL"
+   }
+  },
+  "ExportsOutputFnGetAttCatalogItemsQueueB3B6CE23Arn84BD9E22": {
+   "Value": {
+    "Fn::GetAtt": [
+     "CatalogItemsQueueB3B6CE23",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputFnGetAttCatalogItemsQueueB3B6CE23Arn84BD9E22"
+   }
+  },
+  "ExportsOutputRefCatalogItemsQueueB3B6CE2371CAE407": {
+   "Value": {
+    "Ref": "CatalogItemsQueueB3B6CE23"
+   },
+   "Export": {
+    "Name": "InfraStack:ExportsOutputRefCatalogItemsQueueB3B6CE2371CAE407"
+   }
   }
  },
  "Parameters": {

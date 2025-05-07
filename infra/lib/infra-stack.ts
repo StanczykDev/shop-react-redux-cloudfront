@@ -14,6 +14,8 @@ import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
 
 
 export class InfraStack extends cdk.Stack {
+  public readonly catalogItemsQueue: sqs.Queue;
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -205,6 +207,8 @@ export class InfraStack extends cdk.Stack {
       queueName: 'catalogItemsQueue',
     });
 
+    this.catalogItemsQueue = catalogItemsQueue
+
     const catalogBatchProcessLambda = new NodejsFunction(this, 'CatalogBatchProcessLambda', {
       handler: 'catalogBatchProcessHandler',
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -242,6 +246,10 @@ export class InfraStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'ProductsApiEndpoint', {
       value: `${api.url}products`,
     });
-    
+
+    new cdk.CfnOutput(this, 'CatalogItemsQueueURL', {
+      value: catalogItemsQueue.queueUrl,
+      exportName: 'CatalogItemsQueueURL',
+    })
   }
 }
