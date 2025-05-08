@@ -11,6 +11,8 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import * as path from "path";
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
 
 
 export class InfraStack extends cdk.Stack {
@@ -230,6 +232,19 @@ export class InfraStack extends cdk.Stack {
         batchSize: 5,
       })
     );
+
+    const createProductTopic = new sns.Topic(this, 'CreateProductTopic', {
+      topicName: 'createProductTopic',
+    });
+
+    createProductTopic.addSubscription(new subs.EmailSubscription('stanoque@protonmail.com'));
+
+    catalogBatchProcessLambda.addToRolePolicy(new PolicyStatement({
+      actions: ['sns:Publish'],
+      resources: [createProductTopic.topicArn],
+    }));
+
+    catalogBatchProcessLambda.addEnvironment('CREATE_PRODUCT_TOPIC_ARN', createProductTopic.topicArn);
     
     new cdk.CfnOutput(this, 'BucketName', {
       value: siteBucket.bucketName,

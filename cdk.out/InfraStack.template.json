@@ -174,7 +174,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "374ae8b837fd0e8cb33cf3527e8ff481c40c96ea8f7d48798d80a5a642221ddd.zip"
+     "S3Key": "f3238f7b76bc1756c6c14b10ac73cdea8855dae3c6a3384bb4fdc53beac43905.zip"
     },
     "Environment": {
      "Variables": {
@@ -197,7 +197,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InfraStack/GetProductsListLambda/Resource",
-    "aws:asset:path": "asset.374ae8b837fd0e8cb33cf3527e8ff481c40c96ea8f7d48798d80a5a642221ddd",
+    "aws:asset:path": "asset.f3238f7b76bc1756c6c14b10ac73cdea8855dae3c6a3384bb4fdc53beac43905",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -275,7 +275,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "374ae8b837fd0e8cb33cf3527e8ff481c40c96ea8f7d48798d80a5a642221ddd.zip"
+     "S3Key": "f3238f7b76bc1756c6c14b10ac73cdea8855dae3c6a3384bb4fdc53beac43905.zip"
     },
     "Environment": {
      "Variables": {
@@ -297,7 +297,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InfraStack/CreateProductLambda/Resource",
-    "aws:asset:path": "asset.374ae8b837fd0e8cb33cf3527e8ff481c40c96ea8f7d48798d80a5a642221ddd",
+    "aws:asset:path": "asset.f3238f7b76bc1756c6c14b10ac73cdea8855dae3c6a3384bb4fdc53beac43905",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -1024,6 +1024,13 @@
          "Arn"
         ]
        }
+      },
+      {
+       "Action": "sns:Publish",
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "CreateProductTopicE4CD9217"
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -1046,11 +1053,14 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "374ae8b837fd0e8cb33cf3527e8ff481c40c96ea8f7d48798d80a5a642221ddd.zip"
+     "S3Key": "f3238f7b76bc1756c6c14b10ac73cdea8855dae3c6a3384bb4fdc53beac43905.zip"
     },
     "Environment": {
      "Variables": {
-      "PRODUCTS_TABLE": "products"
+      "PRODUCTS_TABLE": "products",
+      "CREATE_PRODUCT_TOPIC_ARN": {
+       "Ref": "CreateProductTopicE4CD9217"
+      }
      }
     },
     "Handler": "index.catalogBatchProcessHandler",
@@ -1068,7 +1078,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "InfraStack/CatalogBatchProcessLambda/Resource",
-    "aws:asset:path": "asset.374ae8b837fd0e8cb33cf3527e8ff481c40c96ea8f7d48798d80a5a642221ddd",
+    "aws:asset:path": "asset.f3238f7b76bc1756c6c14b10ac73cdea8855dae3c6a3384bb4fdc53beac43905",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -1091,10 +1101,32 @@
     "aws:cdk:path": "InfraStack/CatalogBatchProcessLambda/SqsEventSource:InfraStackCatalogItemsQueueBBFF9CD3/Resource"
    }
   },
+  "CreateProductTopicE4CD9217": {
+   "Type": "AWS::SNS::Topic",
+   "Properties": {
+    "TopicName": "createProductTopic"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/CreateProductTopic/Resource"
+   }
+  },
+  "CreateProductTopicstanoqueprotonmailcom97052AB4": {
+   "Type": "AWS::SNS::Subscription",
+   "Properties": {
+    "Endpoint": "stanoque@protonmail.com",
+    "Protocol": "email",
+    "TopicArn": {
+     "Ref": "CreateProductTopicE4CD9217"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InfraStack/CreateProductTopic/stanoque@protonmail.com/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VQy27CMBD8Fu5mS0CteuXR3ugjfAAyzkINiZ1m10TI8r9XtiOC1NPMrGZnH3MoXl9gNpE9TVV1mdb6AH7HUl2E7GnvaQF+5dQFWayPZmAZvmyt1W0sDzqLlSQMQtXWVcfOGga/0cSdPjjW1sSmRx1ELZtDJffGVngm+Ejw7oxKbi0b8KWtMfYlHGdnFgQt9pIImWAZYQgEvz6ae060Y9dooqjermh4Z12ncCvbVptTNPyvBiFbfZKMvbyBL5F42eq0yUiXSllnWGywre2tQZPe9aB2LE9p/UxKpDQivukuhszMt8g/toqlzIKgXwL/7dAlYyIhjM3p7Jg+HPLpuHUcRHwpnOnpOp9B8QzF5ExaTztnWDcIZcY/1X/RowcCAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VRyW7DIBD9ltzJNIta9ZqlvaWL3XuE8TglsYF6IFGE+PcKcONIPb1Fj9lYwPz5CWYTfqGpqE/TVlbgS8vFifEL7T0twa+dOKFlm0YNLMOHbqW4jvags1hzwsBEq13d9FpZ8FtJtpeVs1Kr+OheB9byrqr5XukajwRvCV6dEikteQe+0C3GdwnH3pkFRss9J0JLsIowFAS/adStToxj30miqF7OqGypXS9wx42R6hAD/93AuJEHbvHCr+ALJLsyMk0y0pUQ2inLtmhafe1QpXPdqdLyQxo/kwIptYhnuomhZuY7tN+6jlZmgdEPgf906FIwkcBIEfgvbaSIZialq0j00vztfK9DGNulQ8V5htXfnTXOBhY/AY70cF7MYP4I88mRpJz2TlnZIRQZfwHEIYq3OQIAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "InfraStack/CDKMetadata/Default"

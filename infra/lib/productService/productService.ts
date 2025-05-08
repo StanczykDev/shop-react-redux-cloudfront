@@ -5,6 +5,9 @@ import * as AWS from 'aws-sdk';
 import { client } from "../database/seedDynamoDB";
 import { v4 as uuidv4 } from "uuid" 
 import { SQSEvent } from "aws-lambda";
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
+
+const snsClient = new SNSClient({ region: "eu-north-1" }); // match your region
 
 export const getHandler: APIGatewayProxyHandler = async (event) => {
   const productId = event.pathParameters?.id;
@@ -118,18 +121,28 @@ export const createHandler: APIGatewayProxyHandler = async (event) => {
 };
 
 export const catalogBatchProcessHandler = async (event: SQSEvent) => {
+  const topicArn = process.env.CREATE_PRODUCT_TOPIC_ARN;
+
   for (const record of event.Records) {
     const product = JSON.parse(record.body);
     await client.send(new PutItemCommand({
       TableName: 'products',
       Item: {
-        id: { S: product.id },
+        id: { S: uuidv4() },
         title: { S: product.title },
         description: { S: product.description },
-        product: { N: product.price.toString() },
+        price: { N: product.price.toString() },
       },
     }));
+
+    await snsClient.send(new PublishCommand({
+      Subject: "New product created",
+      Message: `Product created: ${JSON.stringify(product)}`,
+      TopicArn: topicArn,
+    }));
   }
+
+  return { statusCode: 200 };
 };
 
   

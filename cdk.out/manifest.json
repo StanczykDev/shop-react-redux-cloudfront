@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/6751c18d964652c2069dd4dd1b15834009e41e2d2e059af329f8a355264bce8a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/6c7d00b7a938b3f75d85ce7fa70da9d5c50c7a5af65f688f6f05c87989a33406.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -230,6 +230,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CatalogBatchProcessLambdaSqsEventSourceInfraStackCatalogItemsQueueBBFF9CD3C8CED4A7"
+          }
+        ],
+        "/InfraStack/CreateProductTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateProductTopicE4CD9217"
+          }
+        ],
+        "/InfraStack/CreateProductTopic/stanoque@protonmail.com/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateProductTopicstanoqueprotonmailcom97052AB4"
           }
         ],
         "/InfraStack/BucketName": [
