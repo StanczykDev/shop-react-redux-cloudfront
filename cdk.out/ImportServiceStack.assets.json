@@ -1,0 +1,48 @@
+{
+  "version": "40.0.0",
+  "files": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-eu-north-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "region": "eu-north-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-eu-north-1"
+        }
+      }
+    },
+    "4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e": {
+      "source": {
+        "path": "asset.4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-eu-north-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1",
+          "objectKey": "4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e.zip",
+          "region": "eu-north-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-eu-north-1"
+        }
+      }
+    },
+    "51b8e21722a4babc7c128079355283603190610d94cd0a77ab17a15c50cc6196": {
+      "source": {
+        "path": "ImportServiceStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-eu-north-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1",
+          "objectKey": "51b8e21722a4babc7c128079355283603190610d94cd0a77ab17a15c50cc6196.json",
+          "region": "eu-north-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-eu-north-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
