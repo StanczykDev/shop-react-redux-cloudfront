@@ -55,23 +55,8 @@ export class ImportServiceStack extends cdk.Stack {
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: ['GET', 'PUT', 'OPTIONS'],
-        allowHeaders: ['*'],
+        allowHeaders: ['*', 'Authorization'],
       },
-    });
-    
-    importResource.addMethod('GET', new apigateway.LambdaIntegration(importProductsFileLambda), {
-      requestParameters: {
-        'method.request.querystring.name': true,
-      },
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-      ],
     });
 
     const importFileParserLambda = new NodejsFunction(this, 'ImportFileParserLambda', {
@@ -92,6 +77,50 @@ export class ImportServiceStack extends cdk.Stack {
       filters: [{ prefix: 'uploaded/' }],
     }));
     
+    const basicAuthorizerLambda = new NodejsFunction(this, 'BasicAuthorizerLambda', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: path.join(__dirname, 'authorizationService/authorizationService.ts'),
+      handler: 'authHandler',
+      environment: {
+        StanczykDev: process.env.StanczykDev as string,
+      }
+    });
+
+    const authorizer = new apigateway.TokenAuthorizer(this, 'ImportApiLambdaAuthorizer', {
+      handler: basicAuthorizerLambda,
+      identitySource: 'method.request.header.Authorization',
+    });
+
+    importResource.addMethod('GET', new apigateway.LambdaIntegration(importProductsFileLambda), {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.CUSTOM,
+      requestParameters: {
+        'method.request.querystring.name': true,
+      },
+      methodResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+        {
+            statusCode: '401',
+            responseParameters: {
+                "method.response.header.Access-Control-Allow-Origin": true,
+                "method.response.header.Access-Control-Allow-Headers": true,
+            },
+        },
+        {
+            statusCode: '403',
+            responseParameters: {
+                "method.response.header.Access-Control-Allow-Origin": true,
+                "method.response.header.Access-Control-Allow-Headers": true,
+            },
+        }
+      ],
+    });
 
     new cdk.CfnOutput(this, 'ImportBucketName', {
       value: importBucket.bucketName,

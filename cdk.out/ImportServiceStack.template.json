@@ -430,7 +430,7 @@
     "aws:cdk:path": "ImportServiceStack/ImportApi/Account"
    }
   },
-  "ImportApiDeployment683C38F3f75a21bb0c0176a6dfff4ec7925df83d": {
+  "ImportApiDeployment683C38F365e6718f9057af29226258f987e0855d": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -451,7 +451,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "ImportApiDeployment683C38F3f75a21bb0c0176a6dfff4ec7925df83d"
+     "Ref": "ImportApiDeployment683C38F365e6718f9057af29226258f987e0855d"
     },
     "RestApiId": {
      "Ref": "ImportApiA8B26420"
@@ -493,7 +493,7 @@
      "IntegrationResponses": [
       {
        "ResponseParameters": {
-        "method.response.header.Access-Control-Allow-Headers": "'*'",
+        "method.response.header.Access-Control-Allow-Headers": "'*,Authorization'",
         "method.response.header.Access-Control-Allow-Origin": "'*'",
         "method.response.header.Access-Control-Allow-Methods": "'GET,PUT,OPTIONS'"
        },
@@ -605,7 +605,10 @@
   "ImportApiimportGET39421471": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "AuthorizationType": "NONE",
+    "AuthorizationType": "CUSTOM",
+    "AuthorizerId": {
+     "Ref": "ImportApiLambdaAuthorizer438D90B9"
+    },
     "HttpMethod": "GET",
     "Integration": {
      "IntegrationHttpMethod": "POST",
@@ -637,6 +640,20 @@
        "method.response.header.Access-Control-Allow-Headers": true
       },
       "StatusCode": "200"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Headers": true
+      },
+      "StatusCode": "401"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Headers": true
+      },
+      "StatusCode": "403"
      }
     ],
     "RequestParameters": {
@@ -866,10 +883,178 @@
     "aws:cdk:path": "ImportServiceStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource"
    }
   },
+  "BasicAuthorizerLambdaServiceRole5808D850": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ImportServiceStack/BasicAuthorizerLambda/ServiceRole/Resource"
+   }
+  },
+  "BasicAuthorizerLambda10A45DD8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
+     },
+     "S3Key": "f19b6e1b10f98a53494a208e45fe20b359781c40e2f964593c577bf951543ff3.zip"
+    },
+    "Environment": {
+     "Variables": {}
+    },
+    "Handler": "index.authHandler",
+    "Role": {
+     "Fn::GetAtt": [
+      "BasicAuthorizerLambdaServiceRole5808D850",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "BasicAuthorizerLambdaServiceRole5808D850"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ImportServiceStack/BasicAuthorizerLambda/Resource",
+    "aws:asset:path": "asset.f19b6e1b10f98a53494a208e45fe20b359781c40e2f964593c577bf951543ff3",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "BasicAuthorizerLambdaImportServiceStackImportApiLambdaAuthorizer56EEDFEEPermissions4A8915FB": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "BasicAuthorizerLambda10A45DD8",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-north-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ImportApiA8B26420"
+       },
+       "/authorizers/",
+       {
+        "Ref": "ImportApiLambdaAuthorizer438D90B9"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ImportServiceStack/BasicAuthorizerLambda/ImportServiceStackImportApiLambdaAuthorizer56EEDFEE:Permissions"
+   }
+  },
+  "ImportApiLambdaAuthorizer438D90B9": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "AuthorizerResultTtlInSeconds": 300,
+    "AuthorizerUri": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Fn::Select": [
+         1,
+         {
+          "Fn::Split": [
+           ":",
+           {
+            "Fn::GetAtt": [
+             "BasicAuthorizerLambda10A45DD8",
+             "Arn"
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       ":apigateway:",
+       {
+        "Fn::Select": [
+         3,
+         {
+          "Fn::Split": [
+           ":",
+           {
+            "Fn::GetAtt": [
+             "BasicAuthorizerLambda10A45DD8",
+             "Arn"
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       ":lambda:path/2015-03-31/functions/",
+       {
+        "Fn::GetAtt": [
+         "BasicAuthorizerLambda10A45DD8",
+         "Arn"
+        ]
+       },
+       "/invocations"
+      ]
+     ]
+    },
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "ImportServiceStackImportApiLambdaAuthorizer56EEDFEE",
+    "RestApiId": {
+     "Ref": "ImportApiA8B26420"
+    },
+    "Type": "TOKEN"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ImportServiceStack/ImportApiLambdaAuthorizer/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/21Qy27CMBD8Fu5my0Oteg1UvbWNwgdExlno5mFH2TUIRfn3yjaUIvU0M/saza5g+foCi5k+89xUzbylPYw70aZR+szlyGsYN940KGp7sFeWIHctmcu9fNVJbDTjpFrd7SsN4/Zgcxw6YiZnw8a7t0bI2dtIaV2FNcNnhFtXke5gLFyLYSfi3TSxSfG61MwoDFkApXs6asGzvsBYIEvWU9y+08wY562oN+xbd+nQxmx/1E70MVomUiA7PxgMmX7F9WbiHyjfrgqlxKZJbT2L6/6dfmzlgztRhUO8HiMEV7LHB6svL72XSYU/Qc1Pp9UCls+wnNVMNB+8FeoQioQ/pRT5ZNUBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/21QTW/CMAz9LdyDx4c27VqYdtuGyu4opAZM26SKHRCr+t+npAWGtNN7z479/DKD6esLTEb6zGNTlOOKttCuRZtS6TNvWp5DuwimRFHLnR1YDytXkbncy4PuxUIzdqrS9bbQ0C53doW+JmZyNk68B2uEnL0+2VhX4JHhM8G1q0jX0OauwjiT8G7as07xfKOZURiyCEo3tNeCZ32BNkeWrKE0faeZMS5YUW/YVO5So03Z/qi16H2y7EmO7II3GDPdxLCz5x8oB1fE0sC+XYk2C3Jwnn7QJ9eb6jq1DCyu/nfXY2vl3YkK9Mk7BYw3kd0/HPIVpAnSqfiLcOSn02wC02eYjo5MNPbBCtUIeY+/xEI41vMBAAA="
    },
    "Metadata": {
     "aws:cdk:path": "ImportServiceStack/CDKMetadata/Default"
