@@ -324,7 +324,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/fa3039a6babb4e78d4c455bb1fa97e6295d3e0a6ac3dfbe94194597d1f9d3276.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/1fe6d00dd63234732bf3e8115b1f663d96dd8d4ae60bda81c32cd241c3d326c7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -428,7 +428,7 @@
         "/ImportServiceStack/ImportApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ImportApiDeployment683C38F365e6718f9057af29226258f987e0855d"
+            "data": "ImportApiDeployment683C38F3e3ad546e46d7ab3ec9c1d239cad5c068"
           }
         ],
         "/ImportServiceStack/ImportApi/DeploymentStage.prod/Resource": [

@@ -54,7 +54,7 @@ export class ImportServiceStack extends cdk.Stack {
     const importResource = api.root.addResource('import', {
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: ['GET', 'PUT', 'OPTIONS'],
+        allowMethods: apigateway.Cors.ALL_METHODS,
         allowHeaders: ['*', 'Authorization'],
       },
     });

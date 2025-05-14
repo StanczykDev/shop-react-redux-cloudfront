@@ -337,7 +337,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e.zip"
+     "S3Key": "ab6119463c94eb876a9863a7c3b148c02ed7c6656e2a514f4ea8f8f65c892540.zip"
     },
     "Environment": {
      "Variables": {
@@ -361,7 +361,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ImportServiceStack/ImportProductsFileLambda/Resource",
-    "aws:asset:path": "asset.4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e",
+    "aws:asset:path": "asset.ab6119463c94eb876a9863a7c3b148c02ed7c6656e2a514f4ea8f8f65c892540",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -430,7 +430,7 @@
     "aws:cdk:path": "ImportServiceStack/ImportApi/Account"
    }
   },
-  "ImportApiDeployment683C38F365e6718f9057af29226258f987e0855d": {
+  "ImportApiDeployment683C38F3e3ad546e46d7ab3ec9c1d239cad5c068": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -451,7 +451,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "ImportApiDeployment683C38F365e6718f9057af29226258f987e0855d"
+     "Ref": "ImportApiDeployment683C38F3e3ad546e46d7ab3ec9c1d239cad5c068"
     },
     "RestApiId": {
      "Ref": "ImportApiA8B26420"
@@ -495,7 +495,7 @@
        "ResponseParameters": {
         "method.response.header.Access-Control-Allow-Headers": "'*,Authorization'",
         "method.response.header.Access-Control-Allow-Origin": "'*'",
-        "method.response.header.Access-Control-Allow-Methods": "'GET,PUT,OPTIONS'"
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
        },
        "StatusCode": "204"
       }
@@ -771,7 +771,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e.zip"
+     "S3Key": "ab6119463c94eb876a9863a7c3b148c02ed7c6656e2a514f4ea8f8f65c892540.zip"
     },
     "Environment": {
      "Variables": {
@@ -795,7 +795,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ImportServiceStack/ImportFileParserLambda/Resource",
-    "aws:asset:path": "asset.4fbfe539bc18924c5a94f3bd66608cefd1746bfe77ceaadf29a11f1590f9063e",
+    "aws:asset:path": "asset.ab6119463c94eb876a9863a7c3b148c02ed7c6656e2a514f4ea8f8f65c892540",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -924,7 +924,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1"
      },
-     "S3Key": "f19b6e1b10f98a53494a208e45fe20b359781c40e2f964593c577bf951543ff3.zip"
+     "S3Key": "cbb0e011a3f05273f27082c6b2d312a483715ddf4f43a172598b5f9356c26a4c.zip"
     },
     "Environment": {
      "Variables": {}
@@ -943,7 +943,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ImportServiceStack/BasicAuthorizerLambda/Resource",
-    "aws:asset:path": "asset.f19b6e1b10f98a53494a208e45fe20b359781c40e2f964593c577bf951543ff3",
+    "aws:asset:path": "asset.cbb0e011a3f05273f27082c6b2d312a483715ddf4f43a172598b5f9356c26a4c",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }

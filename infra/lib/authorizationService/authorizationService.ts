@@ -1,30 +1,16 @@
 export const authHandler = async (event) => {
     console.log("Received event:", JSON.stringify(event));
 
-    const authHeader = event.headers?.Authorization || event.headers?.authorization;
+    const authHeader = event?.Authorization || event?.authorization || event?.authorizationToken;
 
     if (!authHeader) {
-        return {
-            statusCode: 401,
-            body: JSON.stringify({ message: 'Unauthorized: Missing Authorization header' }),
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*",
-                "Content-Type": "application/json",
-      }
-        };
+        console.log('No auth header')
+        return null;
     }
 
     if (!authHeader.startsWith('Basic ')) {
-        return {
-            statusCode: 403,
-            body: JSON.stringify({ message: 'Forbidden: Invalid authorization format' }),
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*",
-                "Content-Type": "application/json",
-            }
-        };
+        console.log('Wrong auth header')
+        return null;
     }
 
     const base64Credentials = authHeader.split(' ')[1];
@@ -34,21 +20,11 @@ export const authHandler = async (event) => {
     const envPassword = process.env.StanczykDev;
 
     if (!username || !password || !envPassword) {
-        return {
-            statusCode: 403,
-            body: JSON.stringify({ message: 'Forbidden: Missing or invalid credentials' }),
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*",
-                "Content-Type": "application/json",
-            }
-        };
+        return null
     }
 
     if (username === 'StanczykDev' && password === envPassword) {
         return {
-            statusCode: 200,
-            body: JSON.stringify({ message: 'Authorized' }),
             principalId: username,
             policyDocument: {
                 Version: "2012-10-17",
@@ -60,21 +36,11 @@ export const authHandler = async (event) => {
                     }
                 ]
             },
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*",
-                "Content-Type": "application/json",
+            context: {
+                username
             }
         };
     } else {
-        return {
-            statusCode: 403,
-            body: JSON.stringify({ message: 'Forbidden: Invalid username or password' }),
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "*",
-                "Content-Type": "application/json",
-            }
-        };
+        return null
     }
 };

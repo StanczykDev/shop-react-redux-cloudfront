@@ -2,6 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import axios from "axios";
+import { encode } from "js-base64";
 
 type CSVFileImportProps = {
   url: string;
@@ -35,6 +36,9 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
       url,
       params: {
         name: encodeURIComponent(file.name),
+      },
+      headers: {
+        'Authorization': `Basic ${encode('StanczykDev:TEST_PASSWORD')}`,
       },
     });
     console.log("File to upload: ", file.name);
