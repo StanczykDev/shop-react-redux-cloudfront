@@ -124,7 +124,6 @@ resources:
           #   IncludeCookies: 'false'
           #   Bucket: mylogs.s3.amazonaws.com
           #   Prefix: myprefix
-
   ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
   Outputs:
     WebAppS3BucketOutput:
