@@ -28,7 +28,16 @@ try {
   }
 
   const envContent = `BUCKET_NAME=${BucketName}\nDISTRIBUTION_ID=${DistributionId}\n`;
-  fs.writeFileSync(ENV_FILE, envContent);
+
+  let oldContent = '';
+  if (fs.existsSync(ENV_FILE)) {
+    oldContent = fs.readFileSync(ENV_FILE, 'utf8').split('\n').filter(line => !line.includes('BUCKET_NAME') && !line.includes('DISTRIBUTION_ID')).join('\n');
+  }
+
+  const newContent = envContent + oldContent;
+
+  fs.writeFileSync(ENV_FILE, newContent);
+  
 
   console.log(`.env file updated with:
 BUCKET_NAME=${BucketName}

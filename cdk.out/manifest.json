@@ -324,7 +324,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-eu-north-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-eu-north-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/1fe6d00dd63234732bf3e8115b1f663d96dd8d4ae60bda81c32cd241c3d326c7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-eu-north-1/cc5f3d76882964ea88233b6265d832ca1b76aaf6236cfff48e61107b8d5dbd4e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -428,7 +428,7 @@
         "/ImportServiceStack/ImportApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ImportApiDeployment683C38F3e3ad546e46d7ab3ec9c1d239cad5c068"
+            "data": "ImportApiDeployment683C38F3705ddad0cd361821f1f8afbce3d40d0f"
           }
         ],
         "/ImportServiceStack/ImportApi/DeploymentStage.prod/Resource": [
@@ -471,6 +471,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "ImportApiimportGET39421471"
+          }
+        ],
+        "/ImportServiceStack/ImportApi/AccessDeniedResponse/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportApiAccessDeniedResponse460182E8"
+          }
+        ],
+        "/ImportServiceStack/ImportApi/UnauthorizedResponse/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportApiUnauthorizedResponseC53D6B3A"
+          }
+        ],
+        "/ImportServiceStack/ImportApi/Default4xxResponse/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportApiDefault4xxResponse38E0062D"
           }
         ],
         "/ImportServiceStack/ImportFileParserLambda/ServiceRole/Resource": [

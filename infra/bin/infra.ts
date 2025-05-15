@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+import * as dotenv from "dotenv"
+
+dotenv.config();
+
 import * as cdk from 'aws-cdk-lib';
 import { InfraStack } from '../lib/infra-stack';
 import { ImportServiceStack } from '../lib/import-service-stack';

@@ -8,6 +8,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { ResponseType } from 'aws-cdk-lib/aws-apigateway';
 
 interface ImportServiceStackProps extends cdk.StackProps {
   catalogItemsQueue: sqs.IQueue;
@@ -49,6 +50,30 @@ export class ImportServiceStack extends cdk.Stack {
 
     const api = new apigateway.RestApi(this, 'ImportApi', {
       restApiName: 'Import Service',
+    });
+
+    api.addGatewayResponse('AccessDeniedResponse', {
+      type: ResponseType.ACCESS_DENIED,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'*'",
+      },
+    });
+
+    api.addGatewayResponse('UnauthorizedResponse', {
+      type: ResponseType.UNAUTHORIZED,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'*'",
+      },
+    });
+
+    api.addGatewayResponse('Default4xxResponse', {
+      type: ResponseType.DEFAULT_4XX,
+      responseHeaders: {
+        'Access-Control-Allow-Origin': "'*'",
+        'Access-Control-Allow-Headers': "'*'",
+      },
     });
     
     const importResource = api.root.addResource('import', {
@@ -101,24 +126,25 @@ export class ImportServiceStack extends cdk.Stack {
         {
           statusCode: '200',
           responseParameters: {
+            'method.response.header.Content-Type': true,
             "method.response.header.Access-Control-Allow-Origin": true,
             "method.response.header.Access-Control-Allow-Headers": true,
           },
         },
-        {
-            statusCode: '401',
-            responseParameters: {
-                "method.response.header.Access-Control-Allow-Origin": true,
-                "method.response.header.Access-Control-Allow-Headers": true,
-            },
-        },
-        {
-            statusCode: '403',
-            responseParameters: {
-                "method.response.header.Access-Control-Allow-Origin": true,
-                "method.response.header.Access-Control-Allow-Headers": true,
-            },
-        }
+        // {
+        //     statusCode: '401',
+        //     responseParameters: {
+        //         "method.response.header.Access-Control-Allow-Origin": true,
+        //         "method.response.header.Access-Control-Allow-Headers": true,
+        //     },
+        // },
+        // {
+        //     statusCode: '403',
+        //     responseParameters: {
+        //         "method.response.header.Access-Control-Allow-Origin": true,
+        //         "method.response.header.Access-Control-Allow-Headers": true,
+        //     },
+        // }
       ],
     });
 

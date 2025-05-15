@@ -3,14 +3,8 @@ export const authHandler = async (event) => {
 
     const authHeader = event?.Authorization || event?.authorization || event?.authorizationToken;
 
-    if (!authHeader) {
-        console.log('No auth header')
-        return null;
-    }
-
-    if (!authHeader.startsWith('Basic ')) {
-        console.log('Wrong auth header')
-        return null;
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
+        throw new Error('Unauthorized');
     }
 
     const base64Credentials = authHeader.split(' ')[1];
@@ -19,8 +13,8 @@ export const authHandler = async (event) => {
 
     const envPassword = process.env.StanczykDev;
 
-    if (!username || !password || !envPassword) {
-        return null
+    if (!username || !password) {
+        throw new Error('Unauthorized');
     }
 
     if (username === 'StanczykDev' && password === envPassword) {
@@ -41,6 +35,21 @@ export const authHandler = async (event) => {
             }
         };
     } else {
-        return null
+        return {
+            principalId: username,
+            policyDocument: {
+                Version: "2012-10-17",
+                Statement: [
+                    {
+                        Action: "execute-api:Invoke",
+                        Effect: "Deny",
+                        Resource: event.methodArn
+                    }
+                ]
+            },
+            context: {
+                username
+            }
+        };
     }
 };
